@@ -34,11 +34,13 @@
             cursor: pointer;
             border-radius: 5px;
         }
-        input {
+        input, select {
             padding: 10px;
             margin: 5px 0;
             border-radius: 5px;
             border: 1px solid #ddd;
+            width: 100%;
+            box-sizing: border-box;
         }
     </style>
 </head>
@@ -65,8 +67,6 @@
     </div>
 
     <script>
-    // הקוד שלך כאן
-    // מודל נתונים
     const exerciseCategories = ['כוח עליון', 'כוח תחתון', 'ליבה', 'אירובי'];
 
     class Exercise {
@@ -104,10 +104,8 @@
         }
     }
 
-    // יצירת משתמש
     const user = new User('משתמש', 50, 74, 62);
 
-    // הוספת תרגילים לדוגמה
     const pushups = new Exercise('שכיבות סמיכה', 'כוח עליון');
     const squats = new Exercise('סקוואטים', 'כוח תחתון');
     const plank = new Exercise('פלאנק', 'ליבה');
@@ -118,7 +116,6 @@
     user.addExercise(plank);
     user.addExercise(running);
 
-    // פונקציות עזר
     function addWorkout(exerciseName, weight, reps) {
         const exercise = user.exercises.find(e => e.name === exerciseName);
         if (exercise) {
@@ -150,17 +147,26 @@
         return output;
     }
 
-    // פונקציות ממשק משתמש
     function addWorkoutFromUI() {
         const exercise = document.getElementById('exerciseSelect').value;
         const weight = document.getElementById('weightInput').value;
         const reps = document.getElementById('repsInput').value;
+        if (!exercise || !weight || !reps) {
+            alert('נא למלא את כל השדות');
+            return;
+        }
         const result = addWorkout(exercise, Number(weight), Number(reps));
         document.getElementById('output').innerText = result;
+        document.getElementById('weightInput').value = '';
+        document.getElementById('repsInput').value = '';
     }
 
     function showProgress() {
         const exercise = document.getElementById('progressSelect').value;
+        if (!exercise) {
+            alert('נא לבחור תרגיל');
+            return;
+        }
         const result = getProgressChart(exercise);
         document.getElementById('output').innerText = result;
     }
@@ -170,7 +176,6 @@
         document.getElementById('output').innerText = result;
     }
 
-    // אתחול הדף
     window.onload = function() {
         const exerciseSelect = document.getElementById('exerciseSelect');
         const progressSelect = document.getElementById('progressSelect');
